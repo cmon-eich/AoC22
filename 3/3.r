@@ -1,22 +1,26 @@
+#!/usr/bin/env Rscript
 library(readr)
+options(warn=1)
 data = read_lines("input.txt")
 sum = 0
 for (d in data) {
 	len = nchar(d)
-	s1 = substr(d, 0, d/2)
-	s2 = substr(d, d/2+1, d)
-	# create matrix with priorities
-	# name cols
+	s1 = substr(d, 0, len/2)
+	s2 = substr(d, len/2+1, len)
+	m = rbind(1:52)
+	colnames(m) <- c(letters, LETTERS)
 	found = FALSE
-	for (i1 in strsplit(s1, "")) {
-		for (i2 in strsplit(s2, "")) {
-			if (s1 == s2) {
+	print("looping:")
+	for (i1 in strsplit(s1, "")[[1]]) {
+		for (i2 in strsplit(s2, "")[[1]]) {
+			if (i1 == i2) {
+				print(paste("match: ", i1))
 				if (found) {
-					print("error")
+					# nasty trap
 					return
 				} else {
 					found = TRUE
-					sum = sum + # access col of matrix named like s1 or s2
+					sum = sum + m[,i1]
 				}
 			}
 		}
