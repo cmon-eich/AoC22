@@ -16,12 +16,22 @@ for (d in data) {
 					containers[[i]] <- append(containers[[i]], c)
 				}
 			}
-
-
 		}	
 	} else if (process_plan) {
 		plan <- append(plan, d)
 	} else {
+		d = substr(d, 6, length(d))
+		d = strsplit(d, " from ")[[1]]
+		count = strtoi(d[1])
+		d = strsplit(d[2], " to ")
+		from = strtoi(d[1])
+		to = strtoi(d[2])
+		if (count >= length(from)) {
+			containers[[to]] = append(containers[[to]], containers[[from]])
+			containers[[from]] <- list()
+		} else {
+			temp = containers[[from]][length(containers[[from]]-count):lenght(containers[[from]])]
+		}
 	}
 }
 print(containers)
