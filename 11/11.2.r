@@ -25,9 +25,9 @@ inspect <- function(old, op, val, opold) {
 		v = val
 	}
 	if (op == "+") {
-		return(old+v)
+		return(as.bigz(old+v))
 	} else if (op == "*") {
-		return(old*v)
+		return(as.bigz(old*v))
 	} else {
 		print("Can not determine operation!")
 		stop()
@@ -63,15 +63,21 @@ for (d in data) {
 	}
 }
 # print(monkeys)
-for (i in 1:20) {
+ggv = 1
+for (m in monkeys) {
+	ggv = ggv * attr(m, "test")
+}
+print(ggv)
+for (i in 1:10000) {
 	print(paste("Round: ", as.character(i)))
 	for (j in 1:length(monkeys)) {
-		print(paste("monkey num: ", attr(monkeys[[j]], "num")))
-		print(paste("monkey item count: ", as.character(length(attr(monkeys[[j]], "items")))))
+		# print(paste("monkey num: ", attr(monkeys[[j]], "num")))
+		# print(paste("monkey item count: ", as.character(length(attr(monkeys[[j]], "items")))))
 		for (item in attr(monkeys[[j]], "items")) {
 			# print(paste("Processing item: ", as.character(item)))
 			# monkey inspects item
 			worry_level = inspect(item, attr(monkeys[[j]], "op"), attr(monkeys[[j]], "opval"), attr(monkeys[[j]], "opold"))
+			worry_level = worry_level %% ggv
 			# monkey tests worry level and throws item
 			attr(monkeys[[j]], "inspected") = attr(monkeys[[j]], "inspected") +1
 			if ((as.bigz(worry_level) %% attr(monkeys[[j]], "test")) == 0) {
